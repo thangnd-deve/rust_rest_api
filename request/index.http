@@ -1,0 +1,28 @@
+@server = 127.0.0.1:8080
+
+# request get example
+GET {{@server}}/api/v1/resource
+
+###
+# request post example
+POST {{@server}}/api/v1/resource
+Content-Type: application/json
+Accept: application/json
+{
+  "name": "example",
+  "value": 42
+}
+
+###
+# request put example
+PUT {{@server}}/api/v1/resource/1
+Content-Type: application/json
+Accept: application/json
+{
+    "name": "updated_example",
+    "value": 100
+}
+
+###
+# request delete example
+DELETE {{@server}}/api/v1/resource/1

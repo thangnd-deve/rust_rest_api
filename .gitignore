@@ -1,0 +1,8 @@
+/target
+.vscode
+.env
+
+# config file local is for ide.
+.idea
+.DS_Store
+logs/
