@@ -2,3 +2,12 @@
 name = "rest_api"
 version = "0.1.0"
 edition = "2024"
+
+[dependencies]
+axum = "0.8.7"
+deadpool-postgres = { version = "0.14.1", features = ["serde"] }
+dotenvy = "0.15.7"
+serde = { version = "1.0.228", features = ["derive"] }
+tokio = { version = "1.48.0", features = ["full"] }
+tokio-postgres = "0.7.15"
+validator = { version = "0.20.0", features = ["derive"] }

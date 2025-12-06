@@ -1,0 +1,3 @@
+@server = 127.0.0.1:8080
+# Health check endpoint to verify if the service is running
+GET http://{{server}}/health
