@@ -6,4 +6,5 @@ pub struct APIResponse<T> {
     pub status: bool,
     pub message: String,
     pub data: Option<T>,
+    pub errors: Option<Vec<String>>,
 }

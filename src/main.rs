@@ -1,12 +1,18 @@
-use crate::app::APIResponse;
-use axum::{Json, Router, http::StatusCode, routing::get};
+use crate::{app::APIResponse, rules::CreateUser};
+
+use axum::{
+    Json, Router,
+    http::StatusCode,
+    routing::{get, post},
+};
+use validator::Validate;
 
 mod app;
 mod config;
 mod database;
 mod model;
 mod repository;
-mod validator;
+mod rules;
 
 pub struct AppState {
     pub db: database::Database,
@@ -27,7 +33,9 @@ pub async fn init() -> AppState {
 }
 
 pub async fn run() {
-    let router = Router::new().route("/health", get(health));
+    let router = Router::new()
+        .route("/health", get(health))
+        .route("/users", post(create_user));
 
     // load config server start
     let host = config::get_config_by_key("SERVER_HOST", Some("127.0.0.1"));
@@ -47,5 +55,31 @@ pub async fn health() -> Json<APIResponse<&'static str>> {
         status: true,
         message: "health".to_string(),
         data: Some("health"),
+        errors: None,
+    })
+}
+
+pub async fn create_user(Json(payload): Json<CreateUser>) -> Json<APIResponse<&'static str>> {
+    // validator user create
+    if let Err(errors) = payload.validate() {
+        let error_messages: Vec<String> = errors
+            .field_errors()
+            .iter()
+            .map(|(field, _)| field.to_string())
+            .collect();
+        return Json(APIResponse {
+            code: StatusCode::BAD_REQUEST.as_u16(),
+            status: false,
+            message: "Validation Error".to_string(),
+            data: None,
+            errors: Some(error_messages),
+        });
+    }
+    Json(APIResponse {
+        code: StatusCode::OK.as_u16(),
+        status: true,
+        message: "User created".to_string(),
+        data: Some("User created"),
+        errors: None,
     })
 }

@@ -5,12 +5,13 @@ GET {{@server}}/api/v1/resource
 
 ###
 # request post example
-POST {{@server}}/api/v1/resource
+POST http://{{server}}/users
 Content-Type: application/json
 Accept: application/json
+
 {
-  "name": "example",
-  "value": 42
+  "email": "example@example.com",
+  "password": "password123"
 }
 
 ###
