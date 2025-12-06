@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use crate::{app::APIResponse, rules::CreateUser};
 
 use axum::{
@@ -61,12 +63,16 @@ pub async fn health() -> Json<APIResponse<&'static str>> {
 
 pub async fn create_user(Json(payload): Json<CreateUser>) -> Json<APIResponse<&'static str>> {
     // validator user create
+    println!("Payload: {:?}", payload);
     if let Err(errors) = payload.validate() {
-        let error_messages: Vec<String> = errors
-            .field_errors()
-            .iter()
-            .map(|(field, _)| field.to_string())
-            .collect();
+        let mut error_messages: HashMap<String, Vec<String>> = HashMap::new();
+        for (field, field_errors) in errors.field_errors() {
+            let messages: Vec<String> = field_errors
+                .iter()
+                .filter_map(|e| e.message.as_ref().map(|m| m.to_string()))
+                .collect();
+            error_messages.insert(field.to_string(), messages);
+        }
         return Json(APIResponse {
             code: StatusCode::BAD_REQUEST.as_u16(),
             status: false,
