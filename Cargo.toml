@@ -5,6 +5,8 @@ edition = "2024"
 
 [dependencies]
 axum = "0.8.7"
+bcrypt = "0.16"
+chrono = { version = "0.4.42", features = ["serde"] }
 deadpool-postgres = { version = "0.14.1", features = ["serde"] }
 dotenvy = "0.15.7"
 serde = { version = "1.0.228", features = ["derive"] }

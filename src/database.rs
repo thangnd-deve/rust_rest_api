@@ -3,6 +3,7 @@ use deadpool_postgres::{Config, Pool, Runtime};
 
 use crate::config::get_config_by_key;
 
+#[derive(Clone)]
 pub struct Database {
     pub pool: Pool,
 }
